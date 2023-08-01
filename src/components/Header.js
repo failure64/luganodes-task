@@ -51,8 +51,9 @@ function Header() {
               variant="h6"
               className={classes.title}
             >
-              Luganodes Tracker
+              Crypto Hunter
             </Typography>
+            {/* <Button color="inherit">Login</Button> */}
             <Select
               variant="outlined"
               labelId="demo-simple-select-label"
