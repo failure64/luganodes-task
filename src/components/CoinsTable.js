@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Pagination from "@material-ui/lab/Pagination";
 import {
@@ -16,8 +16,6 @@ import {
   Table,
   Paper,
 } from "@material-ui/core";
-import axios from "axios";
-import { CoinList } from "../config/api";
 import { useHistory } from "react-router-dom";
 import { CryptoState } from "../CryptoContext";
 
@@ -26,12 +24,10 @@ export function numberWithCommas(x) {
 }
 
 export default function CoinsTable() {
-  const [coins, setCoins] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
 
-  const { currency, symbol } = CryptoState();
+  const { symbol, coins, loading } = CryptoState();
 
   const useStyles = makeStyles({
     row: {
@@ -61,24 +57,6 @@ export default function CoinsTable() {
     },
   });
 
-  const fetchCoins = async () => {
-    setLoading(true);
-    try {
-      const { data } = await axios.get(CoinList(currency));
-      setCoins(data);
-      setLoading(false);
-    } catch (error) {
-      console.log("ERROR: ", error)
-      alert("Something went wrong", error.message)
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchCoins();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currency]);
-
   const handleSearch = () => {
     return coins.filter(
       (coin) =>
@@ -86,8 +64,6 @@ export default function CoinsTable() {
         coin.symbol.toLowerCase().includes(search)
     );
   };
-
-  console.log("LOADING: ", loading, coins)
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -107,9 +83,9 @@ export default function CoinsTable() {
         <TableContainer component={Paper}>
           {loading ? (
             <LinearProgress style={{ backgroundColor: "gold" }} />
-            ) : (
-            handleSearch()?.length === 0 ? <h3 style={{margin: "10px"}}>No results found</h3> : (
-              <Table aria-label="simple table">
+          ) : (
+          handleSearch()?.length === 0 ? <h3 style={{margin: "10px"}}>No results found</h3> : (
+            <Table aria-label="simple table">
               <TableHead style={{ backgroundColor: "#EEBC1D" }}>
                 <TableRow>
                   {["Coin", "Price", "24h Change", "Market Cap"].map((head) => (
@@ -120,7 +96,7 @@ export default function CoinsTable() {
                         fontFamily: "Montserrat",
                       }}
                       key={head}
-                      align={head === "Coin" ? "" : "right"}
+                      align={head === "Coin" ? "left" : "right"}
                     >
                       {head}
                     </TableCell>
@@ -195,13 +171,13 @@ export default function CoinsTable() {
                   })}
               </TableBody>
             </Table>
-            )
+          )
           )}
         </TableContainer>
 
         {/* Comes from @material-ui/lab */}
         <Pagination
-          count={(handleSearch()?.length / 10).toFixed(0)}
+          count={parseInt((handleSearch()?.length / 10).toFixed(0))}
           style={{
             padding: 20,
             width: "100%",

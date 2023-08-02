@@ -19,7 +19,7 @@ const Carousel = () => {
     setTrending(data);
     } catch(error){
       console.log("ERROR: ", error)
-      alert("Something went wrong", error.message)
+      alert("Api not available currently. Kindly try after some time.", error.message)
     }
   };
 

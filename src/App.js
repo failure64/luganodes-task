@@ -1,9 +1,10 @@
-import "./App.css";
+import { makeStyles } from "@material-ui/core";
 import { BrowserRouter, Route } from "react-router-dom";
+import "./App.css";
 import Homepage from "./Pages/HomePage";
 import CoinPage from "./Pages/CoinPage";
 import Header from "./components/Header";
-import { makeStyles } from "@material-ui/core";
+import Alert from "./components/Alert";
 
 const useStyles = makeStyles(() => ({
   App: {
@@ -23,6 +24,7 @@ function App() {
         <Route path="/" component={Homepage} exact />
         <Route path="/coins/:id" component={CoinPage} exact />
       </div>
+      <Alert />
     </BrowserRouter>
   );
 }

@@ -15,6 +15,8 @@ import {
 
 import { useHistory } from "react-router-dom";
 import { CryptoState } from "../CryptoContext";
+import AuthModal from "./Authentication/AuthModal";
+import UserSidebar from "./Authentication/UserSidebar";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -37,7 +39,7 @@ const darkTheme = createTheme({
 
 function Header() {
   const classes = useStyles();
-  const { currency, setCurrency } = CryptoState();
+  const { currency, setCurrency, user } = CryptoState();
 
   const history = useHistory();
 
@@ -53,7 +55,6 @@ function Header() {
             >
               Luganodes Tracker
             </Typography>
-            {/* <Button color="inherit">Login</Button> */}
             <Select
               variant="outlined"
               labelId="demo-simple-select-label"
@@ -66,6 +67,7 @@ function Header() {
               <MenuItem value={"INR"}>INR</MenuItem>
               <MenuItem value={"EUR"}>EURO</MenuItem>
             </Select>
+            {user ? <UserSidebar /> : <AuthModal />}
           </Toolbar>
         </Container>
       </AppBar>

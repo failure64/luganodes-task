@@ -16,6 +16,7 @@ const CoinInfo = ({ coin }) => {
   const [historicData, setHistoricData] = useState();
   const [days, setDays] = useState(1);
   const { currency } = CryptoState();
+  // eslint-disable-next-line 
   const [flag,setflag] = useState(false);
 
   const useStyles = makeStyles((theme) => ({
@@ -45,7 +46,7 @@ const CoinInfo = ({ coin }) => {
     setHistoricData(data.prices);
     } catch (error) {
         console.log("ERROR: ", error)
-        alert("Something went wrong", error.message)
+        alert("Api not available currently. Kindly try after some time.", error.message)
       }
   };
 
@@ -68,7 +69,7 @@ const CoinInfo = ({ coin }) => {
   return (
     <ThemeProvider theme={darkTheme}>
       <div className={classes.container}>
-        {!historicData | flag===false ? (
+        {!historicData  ? (
           <CircularProgress
             style={{ color: "gold" }}
             size={250}
