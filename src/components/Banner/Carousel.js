@@ -12,10 +12,15 @@ const Carousel = () => {
   const { currency, symbol } = CryptoState();
 
   const fetchTrendingCoins = async () => {
+    try{
     const { data } = await axios.get(TrendingCoins(currency));
 
     // console.log(data);
     setTrending(data);
+    } catch(error){
+      console.log("ERROR: ", error)
+      alert("Something went wrong", error.message)
+    }
   };
 
   useEffect(() => {

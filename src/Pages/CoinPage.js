@@ -15,9 +15,13 @@ const CoinPage = () => {
   const { currency, symbol } = CryptoState();
 
   const fetchCoin = async () => {
-    const { data } = await axios.get(SingleCoin(id));
-
-    setCoin(data);
+    try{
+      const { data } = await axios.get(SingleCoin(id));
+      setCoin(data);
+    } catch(error){
+      console.log("ERROR: ", error)
+      alert("Something went wrong", error.message)
+    }
   };
 
   useEffect(() => {

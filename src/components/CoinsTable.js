@@ -63,11 +63,15 @@ export default function CoinsTable() {
 
   const fetchCoins = async () => {
     setLoading(true);
-    const { data } = await axios.get(CoinList(currency));
-    console.log(data);
-
-    setCoins(data);
-    setLoading(false);
+    try {
+      const { data } = await axios.get(CoinList(currency));
+      setCoins(data);
+      setLoading(false);
+    } catch (error) {
+      console.log("ERROR: ", error)
+      alert("Something went wrong", error.message)
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -82,6 +86,8 @@ export default function CoinsTable() {
         coin.symbol.toLowerCase().includes(search)
     );
   };
+
+  console.log("LOADING: ", loading, coins)
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -101,8 +107,9 @@ export default function CoinsTable() {
         <TableContainer component={Paper}>
           {loading ? (
             <LinearProgress style={{ backgroundColor: "gold" }} />
-          ) : (
-            <Table aria-label="simple table">
+            ) : (
+            handleSearch()?.length === 0 ? <h3 style={{margin: "10px"}}>No results found</h3> : (
+              <Table aria-label="simple table">
               <TableHead style={{ backgroundColor: "#EEBC1D" }}>
                 <TableRow>
                   {["Coin", "Price", "24h Change", "Market Cap"].map((head) => (
@@ -188,6 +195,7 @@ export default function CoinsTable() {
                   })}
               </TableBody>
             </Table>
+            )
           )}
         </TableContainer>
 
