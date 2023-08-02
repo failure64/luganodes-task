@@ -14,7 +14,7 @@ const Carousel = () => {
   const fetchTrendingCoins = async () => {
     const { data } = await axios.get(TrendingCoins(currency));
 
-    console.log(data);
+    // console.log(data);
     setTrending(data);
   };
 
@@ -27,7 +27,7 @@ const Carousel = () => {
     carousel: {
       height: "50%",
       display: "flex",
-      alignItems: "center",
+      alignItems: "center"
     },
     carouselItem: {
       display: "flex",
@@ -41,7 +41,8 @@ const Carousel = () => {
 
   const classes = useStyles();
 
-  const items = trending.map((coin) => {
+
+  const items = trending?.map((coin) => {
     let profit = coin?.price_change_percentage_24h >= 0;
 
     return (
@@ -71,6 +72,7 @@ const Carousel = () => {
       </Link>
     );
   });
+
 
   const responsive = {
     0: {
